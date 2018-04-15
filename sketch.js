@@ -96,7 +96,7 @@ function setup () {
     },
     err => console.log(err)
   );
-  canvas = createCanvas(800, 600);
+  canvas = createCanvas(1000, 1000);
   // recordSetup();
 }
 function draw () {
