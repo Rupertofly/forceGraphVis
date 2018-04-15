@@ -11,7 +11,8 @@
       "url": "file://${workspaceFolder}/index.html",
       "webRoot": "${workspaceFolder}"
       "skipFiles": [
-        "lib/p5.*"
+        "lib/p5.*",
+        "firebase.js"
       ]
     },
     {
