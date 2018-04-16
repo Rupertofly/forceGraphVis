@@ -96,7 +96,9 @@ function setup () {
     },
     err => console.log(err)
   );
-  canvas = createCanvas(1000, 1000);
+  let theWidth = window.width;
+  if (window.width < 1000) theWidth = 1000;
+  canvas = createCanvas(theWidth, window.height);
   // recordSetup();
 }
 function draw () {
