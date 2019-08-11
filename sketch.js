@@ -49,10 +49,10 @@ function recordFrame() {
  */
 function recordSetup() {
   recorder = new CCapture({
-    format: "webm",
-    framerate: 60
+    format: 'webm',
+    framerate: 60,
   });
-  canvasObject = document.getElementById("defaultCanvas0");
+  canvasObject = document.getElementById('defaultCanvas0');
   recorder.start();
 }
 // #endregion
@@ -70,7 +70,7 @@ var gui;
 var dataIn;
 let guiProps = {
   distance: 0,
-  resetGraph: () => threshold()
+  resetGraph: () => threshold(),
 };
 let groupEnum = Object.freeze({
   Gender: 0,
@@ -78,28 +78,28 @@ let groupEnum = Object.freeze({
   No_Of_Friends: 2,
   First_Language: 3,
   Likes: 4,
-  Dislikes: 5
+  Dislikes: 5,
 });
 function setup() {
   gui = new dat.GUI();
-  let strengthCutoff = gui.add(guiProps, "distance", 0, 1).step(0.05);
-  let thresher = gui.add(guiProps, "resetGraph");
+  let strengthCutoff = gui.add(guiProps, 'distance', 0, 1).step(0.05);
+  let thresher = gui.add(guiProps, 'resetGraph');
   let graphGenerated = false;
   receivedData = false;
   var config = {
-    apiKey: "AIzaSyCZh7bDhcHYesPc0FeKxriL7EZ2Kopk2us",
-    authDomain: "awesomesaucerupert.firebaseapp.com",
-    databaseURL: "https://awesomesaucerupert.firebaseio.com",
-    projectId: "awesomesaucerupert",
-    storageBucket: "awesomesaucerupert.appspot.com",
-    messagingSenderId: "465094389233"
+    apiKey: 'AIzaSyCZh7bDhcHYesPc0FeKxriL7EZ2Kopk2us',
+    authDomain: 'awesomesaucerupert.firebaseapp.com',
+    databaseURL: 'https://awesomesaucerupert.firebaseio.com',
+    projectId: 'awesomesaucerupert',
+    storageBucket: 'awesomesaucerupert.appspot.com',
+    messagingSenderId: '465094389233',
   };
 
   firebase.initializeApp(config);
   let db = firebase.database();
-  let ref = db.ref("firstExerciseData");
+  let ref = db.ref('firstExerciseData');
   ref.once(
-    "value",
+    'value',
     data => {
       dataIn = data;
       formatData(data);
@@ -107,7 +107,6 @@ function setup() {
     err => console.log(err)
   );
   let theWidth = windowWidth;
-  if (windowWidth < 1000) theWidth = 1000;
   canvas = createCanvas(theWidth, windowHeight);
   // recordSetup();
 }
@@ -132,7 +131,7 @@ function draw() {
     for (let [k, c] of nodePos.entries()) {
       if (myMouseOver(c.x, c.y, 20)) {
         bNodeSelected = true;
-        console.log("boom");
+        console.log('boom');
 
         selectedNode = friendData.nodes[k];
         break;
@@ -196,28 +195,28 @@ function formatData(data) {
   }
   console.log(friendDataArray);
   let dataTypes = {
-    Gender: ["Man", "Woman", "Non-Binary"],
-    Age: ["18", "25", "30", "38", "45", "55", "75"],
-    No_Of_Friends: ["2", "12", "50", "100", "200", "600", "1000", "2000"],
-    First_Language: ["English", "Mandarin", "Thai", "Arabic", "Italian"],
+    Gender: ['Man', 'Woman', 'Non-Binary'],
+    Age: ['18', '25', '30', '38', '45', '55', '75'],
+    No_Of_Friends: ['2', '12', '50', '100', '200', '600', '1000', '2000'],
+    First_Language: ['English', 'Mandarin', 'Thai', 'Arabic', 'Italian'],
     things: [
-      "Superhero movies",
-      "AFL",
-      "Premier League Soccer",
-      "Heavy Metal Music",
-      "Memes",
-      "Blazing 420",
-      "Hip-hop Music",
-      "Cocktail Bars",
-      "Motorshows",
-      "dogs"
-    ]
+      'Superhero movies',
+      'AFL',
+      'Premier League Soccer',
+      'Heavy Metal Music',
+      'Memes',
+      'Blazing 420',
+      'Hip-hop Music',
+      'Cocktail Bars',
+      'Motorshows',
+      'dogs',
+    ],
   };
   let sortedData = {};
   for (let key in dataTypes) {
-    if (key === "things") {
-      sortedData["Likes"] = {};
-      sortedData["Dislikes"] = {};
+    if (key === 'things') {
+      sortedData['Likes'] = {};
+      sortedData['Dislikes'] = {};
       for (let valKey in dataTypes[key]) {
         sortedData.Likes[dataTypes[key][valKey]] = {};
         sortedData.Dislikes[dataTypes[key][valKey]] = {};
@@ -273,20 +272,20 @@ function graphData(inputData) {
     let isThing = isAThing(groupName);
     for (let [element, eLinks] of Object.entries(group)) {
       let originN;
-      if (isThing !== false) originN = isThing + "_" + element;
+      if (isThing !== false) originN = isThing + '_' + element;
       else originN = element;
       for (let [tGroupName, tGroup] of Object.entries(eLinks)) {
         let tIsThing = isAThing(tGroupName);
         for (let [tElement, strength] of Object.entries(tGroup)) {
           let targetN;
-          if (tIsThing !== false) targetN = tIsThing + "_" + tElement;
+          if (tIsThing !== false) targetN = tIsThing + '_' + tElement;
           else targetN = tElement;
           if (strength <= -2) continue;
           if (originN === targetN) continue;
           let link = {
             source: originN,
             target: targetN,
-            strength: map(strength, -2, 12, 0, 1)
+            strength: map(strength, -2, 12, 0, 1),
           };
           if (
             output.links.some(e => e.target === originN && e.source === targetN)
@@ -305,7 +304,7 @@ function graphData(inputData) {
     if (a.strength > sMax) sMax = a.strength;
     if (a.strength < sMin) sMin = a.strength;
   }
-  console.log("Between" + sMin + " and " + sMax);
+  console.log('Between' + sMin + ' and ' + sMax);
   output.nodes = [];
 
   for (let [groupName, group] of Object.entries(inputData)) {
@@ -313,7 +312,7 @@ function graphData(inputData) {
     let isThing = isAThing(groupName);
     for (let element of Object.keys(group)) {
       let originN;
-      if (isThing !== false) originN = isThing + "_" + element;
+      if (isThing !== false) originN = isThing + '_' + element;
       else originN = element;
       let node = {
         id: originN,
@@ -321,7 +320,7 @@ function graphData(inputData) {
         groupName: groupName,
         label: element,
         x: 0,
-        y: 0
+        y: 0,
       };
       output.nodes.push(node);
     }
@@ -330,8 +329,8 @@ function graphData(inputData) {
 }
 function isAThing(group) {
   let isAThing;
-  if (group === "Likes") isAThing = "L";
-  else if (group === "Dislikes") isAThing = "D";
+  if (group === 'Likes') isAThing = 'L';
+  else if (group === 'Dislikes') isAThing = 'D';
   else isAThing = false;
   return isAThing;
 }
@@ -344,7 +343,7 @@ function graphMaker() {
       x: 0,
       y: 0,
       group: n.group,
-      opacity: 1
+      opacity: 1,
     });
   }
 
@@ -355,7 +354,7 @@ function graphMaker() {
       x2: 0,
       y2: 0,
       str: n.strength,
-      opacity: 1
+      opacity: 1,
     });
   }
 
@@ -365,11 +364,11 @@ function graphMaker() {
     .strength(-100)
     .distanceMax(100)
     .distanceMin(1);
-  simulation.force("charge", repelForce);
-  simulation.force("center", d3.forceCenter(windowWidth / 2, windowHeight / 2));
-  simulation.nodes(friendData.nodes).on("tick", simTick);
+  simulation.force('charge', repelForce);
+  simulation.force('center', d3.forceCenter(windowWidth / 2, windowHeight / 2));
+  simulation.nodes(friendData.nodes).on('tick', simTick);
   simulation.force(
-    "link",
+    'link',
     d3
       .forceLink()
       .id(link => link.id)
@@ -389,14 +388,14 @@ function graphMaker() {
 
   friendData.linkedByIndex = {};
   for (let i = 0; i < friendData.nodes.length; i++) {
-    friendData.linkedByIndex[i + "," + i] = 1;
+    friendData.linkedByIndex[i + ',' + i] = 1;
   }
   friendData.links.forEach(d => {
-    friendData.linkedByIndex[d.source.index + "," + d.target.index] = 1;
+    friendData.linkedByIndex[d.source.index + ',' + d.target.index] = 1;
   });
 
   friendData.neigbouring = function(a, b) {
-    return friendData.linkedByIndex[a.index + "," + b.index];
+    return friendData.linkedByIndex[a.index + ',' + b.index];
   };
   simulation.restart();
 }
